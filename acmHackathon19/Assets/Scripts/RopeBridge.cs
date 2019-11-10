@@ -7,7 +7,7 @@ public class RopeBridge : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
 
-    private LineRenderer line;
+    private LineRenderer lineRenderer;
     private List<RopeSegment> ropeSegments = new List<RopeSegment>();
     private float ropeSegLen = 0.25f;
     private int segmentLength = 35;
@@ -50,23 +50,9 @@ public class RopeBridge : MonoBehaviour
             firstSegment.posNow += velocity;
             firstSegment.posNow += forceGravity * Time.fixedDeltaTime;
             this.ropeSegments[i] = firstSegment;
-            this.AddColliderToLine(line, firstSegment);
         }
 
-        private void AddColliderToLine(LineRenderer line, RopeSegment collisionSegment)
-        {
-            BoxCollider2D segmentCollider = new GameObject("LineCollider").AddComponent<BoxCollider2D>();
-            segmentCollider.transform.parent = line.transform;
-            float lineWidth = line.endWidth;
-            float lineLength = Vector2.Distance(collisionSegment.posNow, collisionSegment.posOld);
-            segmentCollider.size = new Vector2(lineLength, lineWidth);
-            Vector2 midPoint = (collisionSegment.posNow + collisionSegment.posOld)/2;
-            segmentCollider.transform.position = midPoint;
-            float angle = Mathf.Atan2((collisionSegment.posNow.x - collisionSegment.posOld.x), (collisionSegment.posNow.y - collisionSegment.posOld.y));
-            angle *= Math.Rad2Deg;
-            angle *= -1;
-            segmentCollider.transform.Rotate(0, angle, 0);
-        }
+
 
         //CONSTRAINTS
         for (int i = 0; i < 100; i++)
